@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import styles from './Chat.module.css'; // Assuming you've set up CSS Modules
 
-const socket = io.connect(process.env.REACT_APP_SERVER_URL);
+const socket = io.connect(process.env.REACT_APP_SERVER_URL || "https://chat-server-f9bx.onrender.com");
 
 function Chat() {
   const [username, setUsername] = useState('');
@@ -10,7 +10,6 @@ function Chat() {
   const [chat, setChat] = useState([]);
 
   useEffect(() => {
-    // Load the username from localStorage when the component mounts
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
       setUsername(storedUsername);
@@ -23,6 +22,17 @@ function Chat() {
 
   const sendMessage = (e) => {
     e.preventDefault();
+
+    if (message === '') {
+      alert('Please enter a message');
+      return;
+    }
+
+    if (username === '') {
+      alert('Please enter a username');
+      return;
+    }
+
     const messageData = {
       username: username,
       message: message,
@@ -46,6 +56,7 @@ function Chat() {
         value={username}
         onChange={handleUsernameChange}
         placeholder="Enter your name"
+        required
       />
       <form onSubmit={sendMessage} className={styles.form}>
         <input
@@ -55,6 +66,7 @@ function Chat() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type a message"
+          required
         />
         <button type="submit" className={styles.button}>Send</button>
       </form>
