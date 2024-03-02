@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import styles from './Chat.module.css'; // Assuming you've set up CSS Modules
 
-const socket = io.connect(process.env.REACT_APP_SERVER_URL || "https://chat-server-f9bx.onrender.com");
+const socket = io.connect(process.env.REACT_APP_SERVER_URL);
 
 function Chat() {
   const [username, setUsername] = useState('');
